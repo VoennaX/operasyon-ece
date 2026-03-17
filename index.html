@@ -190,11 +190,15 @@ endGame();
 
 function endGame(){
 let photo = score >= 85 ? "ecebir.jpg" : "eceiki.jpg";
+let message = score >= 85 ? "Berra'yı ikna ettin! Bakalım Ece ikna olacak mı?" : " Orijinal karakterimizin ağzı senden iyi laf yapıyomuş";
+
+document.getElementById("game").classList.remove("question-bg");
+document.getElementById("game").style.background = `linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('${photo}') center/cover no-repeat`;
+document.getElementById("game").style.backgroundAttachment = "fixed";
 
 document.getElementById("gameContent").innerHTML = `
 <h2>Skor: ${score}</h2>
-<h3>${score >= 85 ? "ECEYİ TAVLADIN" : "Biraz daha çalışman lazım"}</h3>
-<img src="${photo}" style="max-width:100%;margin-top:20px;border-radius:12px;">
+<h3>${message}</h3>
 `;
 }
 </script>
