@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operasyon: Ece</title>
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#000;
+color:white;
+}
+
+.section{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+}
+
+.hidden{display:none;}
+
+.container{
+max-width:800px;
+padding:20px;
+background:rgba(0,0,0,0.7);
+border-radius:15px;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#444;
+color:#00cc55;
+font-weight:bold;
+width:100%;
+}
+
+.options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;
+}
+
+@media (max-width:700px){
+.options{
+grid-template-columns:1fr;
+}
+}
+
+.question-bg{
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('berravadi.jpg') center/cover no-repeat;
+background-attachment:fixed;
+}
+
+.matrix{
+color:#00ff66;
+font-family:"Courier New", monospace;
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+<source src="arkaplanmuzik.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MATRIX GİRİŞ -->
+<div class="section matrix" id="matrixIntro">
+<div class="container">
+<h1>Operasyon: Ece</h1>
+<p>
+Sen şu an Alpersin ve bir süredir berranın yakın arkadaşı eceyi beğeniyosun,<br>
+berranın hikayelerinde gördüğünden beri kıvır kıvır saçları ve gülüşü çok hoşuna gitti.<br><br>
+Berrayı eceyi sana ayarlaması için ikna etmen lazım ama kolay olduğunu düşünme,<br>
+orijinal çarımızın bunu başarması uzun sürdü...<br><br>
+Neyse ki ikna kabiliyetleri sağlamdı
+</p>
+<br>
+<p><b>Plan:</b> Arkadaşını ikna edip Ece ile tanışmak.</p>
+<br>
+<button onclick="startGame()">Göreve Başla</button>
+</div>
+</div>
+
+<!-- OYUN -->
+<div class="section hidden question-bg" id="game">
+<div class="container" id="gameContent"></div>
+</div>
+
+<script>
+let score = 0;
+let current = 0;
+
+const questions = [
+{
+text:`Bir yaz akşamı arkadaşın berrayla vadide oturup Sohbet ediyorsunuz. Yakın zamanda hazırlık sınavın var ve ara sıra bEraber İngilizce konuşup sınava çalışıyorsunuz. Berranın yakıN arkadaşı Ece için de arada sırada şansını deniyordun zaten, belki bugün şans yüzüne güler kim bİlir?`,
+options:[
+{t:`Ece napıyor diye sor`,p:20},
+{t:`Berraya çaktırmamak için bOşta kız arkadaşın var mı diye sor`,p:5},
+{t:`Konuyu açma Berra darlanmasın, zamanı gelince açarsın`,p:10},
+{t:`Kaç senedir arkadaşız bi tane arKadaşını ayarlamadın diye makaraya vur`,p:10}
+]
+},
+{
+text:`Konu bi şekilde Eceye geldi hadi yine şanSlısın, peki sizi ayarlaması için nasıl ikna edecEksin?`,
+options:[
+{t:`Ece'ye iltifatlar yağdır`,p:10},
+{t:`Madem Türkçe ikna edemiyosun, İngilizce denesen?`,p:25},
+{t:`Ece'ye ne kadar iyi davranacağını anlat Ve Berranın aklına gir`,p:15},
+{t:`Umursadığını çok belli etme rahat takıl`,p:5}
+]
+},
+{
+text:`Berra sizden asla olmayacağını düşünüyor, Ece sana bakmaz dedi onu İkna etmen lazım.`,
+options:[
+{t:`Tavladığın önceki kızları anlat ve Ece'yi de tavlayabilceğini söyle`,p:10},
+{t:`Ece'nin tipi olduğunu kanıtlamaya çalış`,p:15},
+{t:`Zaten İzmir'e gidiyorum gitmeden önce bi ayarla diyip kendine acındır`,p:5},
+{t:`Tipine uYmak için kendini değiştirebileceğini söyle`,p:10}
+]
+},
+{
+text:`Berra ikna olmak üzere ama bazı endişeleri var. Sana, Ece ile aranda bi sorun çıkarsa aranızda kalacağını ve bu yüzden emin olmadığını söyledi nasıl cevap vereceksin?`,
+options:[
+{t:`Seni çok daha uzun süredir tanıdığını ve seni tutması gerektiğini söyle`,p:5},
+{t:`Ece ile hiç sorun çıkmayacak için rahat olsun de`,p:10},
+{t:`Haklı Olanı tutarsın de`,p:15},
+{t:`Biz seni aRada bırakmayız hatta mümkünse araya girme de`,p:20}
+]
+},
+{
+text:`Berra Ece'nin ciddi mi takılmalık mı istediğini bilmediğini söyledi, nasıl cevap vericeksin`,
+options:[
+{t:`Takılmalık uyar bana de `,p:10},
+{t:`Ciddiyse olUr ben ciddi düşünüyorum de `,p:15},
+{t:`O nasıl isterse okeyim de biraz yavşaklık yap`,p:20},
+{t:`Ne istediğini bilmeyen kızdan olMaz de`,p:5}
+]
+},
+{
+text:`Buraya kadar sana bir easter egg bıraktım, ipucu: Baş harfleri birleştir. Bakalım yeteri kadar dikkatli misin?`,
+options:[
+{t:`Paşa&Böcek`,p:0},
+{t:`Bebeğimsin`,p:0},
+{t:`Seni çok seviyorum`,p:50},
+{t:`Tipini yediğim`,p:0}
+]
+}
+];
+
+function startGame(){
+document.getElementById("matrixIntro").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+
+const music = document.getElementById("bgMusic");
+music.play().catch(()=>{});
+
+showQuestion();
+}
+
+function showQuestion(){
+let q = questions[current];
+let html = `<h2>${q.text}</h2><div class="options">`;
+
+q.options.forEach((opt,i)=>{
+html += `<button onclick="answer(${i})">${opt.t}</button>`;
+});
+
+html += `</div>`;
+
+document.getElementById("gameContent").innerHTML = html;
+}
+
+function answer(i){
+score += questions[current].options[i].p;
+current++;
+
+if(current < questions.length){
+showQuestion();
+}else{
+endGame();
+}
+}
+
+function endGame(){
+let photo = score >= 85 ? "ecebir.jpg" : "eceiki.jpg";
+
+document.getElementById("gameContent").innerHTML = `
+<h2>Skor: ${score}</h2>
+<h3>${score >= 85 ? "ECEYİ TAVLADIN" : "Biraz daha çalışman lazım"}</h3>
+<img src="${photo}" style="max-width:100%;margin-top:20px;border-radius:12px;">
+`;
+}
+</script>
+
+</body>
+</html>
